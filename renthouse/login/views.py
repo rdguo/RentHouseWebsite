@@ -1,29 +1,45 @@
 from django.shortcuts import render,redirect
-from .models import LoginInfo
+from .models import LoginInfo,RegisterInfo
 from django.http import HttpResponse
 
-#测试用例
-def index(request):
-    return HttpResponse("Hello, world. ") #test
-
-def indexman(request):
-    return render(request,"login/register.html")
-
-'''登录系统功能'''
+'''登录系统界面'''
 def loginSystem(request):
-    userinfoList = LoginInfo.objects.all() #得到用户信息数据库列表  就是包含所有用户信息
     if request.method == "POST": #当传递参数后 submit
         user_name = request.POST.get("username",None) #获得输入的用户名
         pass_word = request.POST.get("password",None)  #获得输入的密码
-        search_obj = LoginInfo.objects.get(username=user_name,password=pass_word) #判断数据库当中是否存在
-        search_count = len(search_obj)
-        if search_count == 1: #说明找到
-            return redirect('indexman') #重定向到登录成功页面
-        else:
-            print("当前密码或用户名输错")
-            return render(request, 'login/login.html', {'modellist': userinfoList})
-    return render(request,'login/login.html',{'modellist':userinfoList})
+        if user_name and pass_word: #检查用户名和密码是否为空 (注册界面通过前端js来判断)
+            try:  #要加try，不然查不到数据会报404错误
+                user = LoginInfo.objects.get(username=user_name)
+            except:
+                return render(request,"register.html") #查不到数据时候返回用户名不存在提示
+            if user.password == pass_word:
+                return redirect(registerSystem)
+            else:
+                return render(request,"register.html") #查不到数据时候返回密码错误提示
+    return render(request, 'login.html')
 
-'''注册界面功能'''
+'''注册界面'''
 def registerSystem(request):
-    return render(request,'login/regist.html')
+    #先查数据库当中是否有数据、然后没有数据后再添加
+    if request.method == "POST":
+        ''' 获得相关数据 '''
+        user_name = request.POST.get("username",None)
+        pass_word = request.POST.get("password",None)
+        gender = request.POST.get("gender",None)
+        identify_number = request.POST.get("Id",None)
+        address = request.POST.get("address",None)
+        email = request.POST.get("Email",None)
+        phone = request.POST.get("Phone",None)
+        try:
+            search_List = RegisterInfo.objects.get(username=user_name)
+        except:
+            #当没查到数据时.自动添加数据
+            obj = RegisterInfo(username=user_name, password=pass_word, gender=gender, identifyid=identify_number,
+                               address=address, email=email, phone=phone)
+            obj.save()
+            obj_Login = LoginInfo(username=user_name,password=pass_word)
+            obj_Login.save()
+            #返回注册成功界面
+            return render(request, 'login.html')
+        return HttpResponse(request,"注册失败提醒 当前存在该用户")
+    return render(request, 'register.html')
