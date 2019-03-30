@@ -16,10 +16,10 @@ class RegisterInfo(models.Model):
         ('female', "女")
     )
     gender = models.CharField(max_length=6,choices=gender_choice)#性别
-    identifyid = models.CharField(max_length=15)#身份证
+    identifyid = models.CharField(max_length=18)#身份证 18位
     address = models.CharField(max_length=30)#邮箱地址
-    email = models.CharField(max_length=30)#email邮件
-    phone = models.CharField(max_length=30)#联系电话
+    email = models.CharField(max_length=20)#email邮件
+    phone = models.CharField(max_length=11)#联系电话
 
 
 

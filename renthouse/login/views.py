@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from .models import LoginInfo,RegisterInfo
 from django.http import HttpResponse
+import json #用于数据交互
 
 '''登录系统界面'''
 def loginSystem(request):
@@ -11,11 +12,12 @@ def loginSystem(request):
             try:  #要加try，不然查不到数据会报404错误
                 user = LoginInfo.objects.get(username=user_name)
             except:
-                return render(request,"register.html") #查不到数据时候返回用户名不存在提示
+                flag_judge = "密码错误"
+                return render(request,"register.html",{'errorinfo':flag_judge}) #查不到数据时候返回用户名不存在提示
             if user.password == pass_word:
                 return redirect(registerSystem)
-            else:
-                return render(request,"register.html") #查不到数据时候返回密码错误提示
+            else:#查不到数据时候返回密码错误提示
+                return redirect(registerSystem)
     return render(request, 'login.html')
 
 '''注册界面'''
