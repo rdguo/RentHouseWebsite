@@ -71,9 +71,10 @@
 							<label for="password">验证码</label>
 						</div>
 						<div class="col-md-8">
+                            {{ login_form.captcha }}
 								<div class="input-group">
 									<input type="text"  id="user" name="verifycode" class="form-control" placeholder="验证码"/>
-									<span class="input-group-btn">
+                                    <span class="input-group-btn">
 										<button type="button" class="btn btn-warning">重新获取验证码</button>
 									</span>
 								</div>

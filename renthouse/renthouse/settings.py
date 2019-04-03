@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'captcha', #添加验证码模块
     'login.apps.LoginConfig', #将login安装到项目上
     'django.contrib.admin',
     'django.contrib.auth',

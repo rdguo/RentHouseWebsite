@@ -19,4 +19,6 @@ from django.urls import path,include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', include('login.urls')), #调用登录url；
+    path('captcha/',include('captcha.urls')),#添加图片验证码路由
+    #path('refresh_captcha/',),
 ]

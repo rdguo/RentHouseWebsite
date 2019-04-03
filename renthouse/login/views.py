@@ -5,6 +5,7 @@ import json #用于数据交互
 
 '''登录系统界面'''
 def loginSystem(request):
+    login_form = LoginInfo()
     if request.method == "POST": #当传递参数后 submit
         user_name = request.POST.get("username",None) #获得输入的用户名
         pass_word = request.POST.get("password",None)  #获得输入的密码
@@ -15,10 +16,10 @@ def loginSystem(request):
                 flag_judge = "密码错误"
                 return render(request,"register.html",{'errorinfo':flag_judge}) #查不到数据时候返回用户名不存在提示
             if user.password == pass_word:
-                return redirect(registerSystem)
+                return redirect(mainPageSystem) #映射到登录成功界面
             else:#查不到数据时候返回密码错误提示
                 return redirect(registerSystem)
-    return render(request, 'login.html')
+    return render(request, 'login.html',{"login_form":login_form})
 
 '''注册界面'''
 def registerSystem(request):
@@ -45,3 +46,7 @@ def registerSystem(request):
             return render(request, 'login.html')
         return HttpResponse(request,"注册失败提醒 当前存在该用户")
     return render(request, 'register.html')
+
+'''主页面'''
+def mainPageSystem(request):
+    return render(request,'main.html')
