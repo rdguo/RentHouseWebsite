@@ -1,6 +1,5 @@
 from django.db import models
-from captcha.fields import CaptchaField
-from django import forms #用于使用表单功能
+#from django import forms #用于使用表单功能
 # Create your models here.
 # 用于创建数据库类型
 
@@ -8,8 +7,6 @@ from django import forms #用于使用表单功能
 class LoginInfo(models.Model):
     username = models.CharField(max_length=20 , primary_key=True) #设置主键
     password = models.CharField(max_length=30)
-    #验证码表单
-    captcha = CaptchaField(required=True,error_messages={"invalid":"验证码错误"})
 
 
 #注册信息数据库
